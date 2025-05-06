@@ -13,6 +13,7 @@ public:
     ~DBAbstraction();
     
     void getAllStudents(); //prints all the students
+    void getAllClasses();
 private:
     sqlite3* db;
     bool openDB(const string& dbPath);
