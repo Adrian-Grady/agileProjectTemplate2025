@@ -26,7 +26,10 @@ void DBAbstraction::closeDB()
         db = nullptr;
     }
 }
-
+void DBAbstraction::getAllStudents()
+{
+    
+}
 
 
 void DBAbstraction::getAllClasses()
