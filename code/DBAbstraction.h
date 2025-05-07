@@ -13,6 +13,7 @@ public:
     ~DBAbstraction();
     
     void getAllStudents(); //prints all the students
+    void addStudent(const string& firstName, const string& lastName);
     void getAllClasses();
 private:
     sqlite3* db;

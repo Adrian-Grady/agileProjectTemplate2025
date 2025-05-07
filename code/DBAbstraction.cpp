@@ -26,6 +26,30 @@ void DBAbstraction::closeDB()
         db = nullptr;
     }
 }
+void DBAbstraction::addStudent(const string& firstName, const string& lastName)
+{
+    const char* sql = "INSERT INTO Students (first_name, last_name) VALUES (?, ?);";
+    sqlite3_stmt* stmt;
+    
+    if(sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK)
+    {
+        cerr << "Status Failed: " << sqlite3_errmsg(db) << endl;
+        return;
+    }
+    sqlite3_bind_text(stmt, 1, firstName.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, lastName.c_str(), -1, SQLITE_STATIC);
+
+        if (sqlite3_step(stmt) != SQLITE_DONE)
+        {
+            cerr << "Insert failed: " << sqlite3_errmsg(db) << endl;
+        }
+        else
+        {
+            cout << "Student added successfully.\n";
+        }
+
+        sqlite3_finalize(stmt);
+}
 void DBAbstraction::getAllStudents()
 {
     const char* sql = "SELECT id, first_name, last_name FROM Students;";
