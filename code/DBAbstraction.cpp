@@ -31,15 +31,15 @@ void DBAbstraction::getAllStudents()
     const char* sql = "SELECT id, first_name, last_name FROM Students;";
     sqlite3_stmt* stmt;
     
-    if (sqlite_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK)
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK)
     {
         cerr << "Failed to excute statement: " << sqlite3_errmsg(db) << "\n";
         return;
     }
-    while(sqlite_step(stmt) == SQLITE_ROW)
+    while(sqlite3_step(stmt) == SQLITE_ROW)
     {
         int id = sqlite3_column_int(stmt,0);
-        string firstName = reinterpret_cast<const char*>(sqlite3_colomn_text(stmt,1));
+        string firstName = reinterpret_cast<const char*>(sqlite3_coloumn_text(stmt,1));
         string lastName = reinterpret_cast<const
             char*>(sqlite3_column_text(stmt, 2));
         
