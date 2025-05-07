@@ -13,7 +13,9 @@ public:
     ~DBAbstraction();
     
     void getAllStudents(); //prints all the students
-    void addStudent(const string& firstName, const string& lastName);
+    void addStudent(const string& firstName, const string& lastName); //add students
+    void editStudentFirstName(int studentID, const string& newFirstName);
+    void editStudentLastName(int studentID, const string& newLastName);
     void getAllClasses();
 private:
     sqlite3* db;

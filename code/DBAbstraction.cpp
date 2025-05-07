@@ -73,8 +73,56 @@ void DBAbstraction::getAllStudents()
     }
     sqlite3_finalize(stmt);
 }
+void DBAbstraction::editStudentFirstName(int studentID, const string& newFirstName)
+{
+    const char* sql = "UPDATE Students SET first_name = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
 
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK)
+    {
+        cerr << "Preparation failed: " << sqlite3_errmsg(db) << endl;
+        return;
+    }
 
+    sqlite3_bind_text(stmt, 1, newFirstName.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 2, studentID);
+
+    if (sqlite3_step(stmt) != SQLITE_DONE)
+    {
+        cerr << "Update failed: " << sqlite3_errmsg(db) << endl;
+    }
+    else
+    {
+        cout << "First name updated successfully." << endl;
+    }
+
+    sqlite3_finalize(stmt);
+}
+void DBAbstraction::editStudentLastName(int studentID, const string& newLastName)
+{
+    const char* sql = "UPDATE Students SET last_name = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK)
+    {
+        cerr << "Preparation failed: " << sqlite3_errmsg(db) << endl;
+        return;
+    }
+
+    sqlite3_bind_text(stmt, 1, newLastName.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 2, studentID);
+
+    if (sqlite3_step(stmt) != SQLITE_DONE)
+    {
+        cerr << "Update failed: " << sqlite3_errmsg(db) << endl;
+    }
+    else
+    {
+        cout << "Last name updated successfully." << endl;
+    }
+
+    sqlite3_finalize(stmt);
+}
 void DBAbstraction::getAllClasses()
 {
     sqlite3_stmt* myStatement;
