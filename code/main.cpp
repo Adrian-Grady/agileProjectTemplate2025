@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <chrono>
+#include <string>
 using namespace std;
 void entryIO();
 void getSummary();
@@ -114,7 +115,44 @@ void recordAttn()
     }
     else if (inDateOpt == '2')
     {
-        //do stuff
+        string date; 
+        string month, day, year;
+
+        cout << "Please enter a date (MM/DD/YYYY)" << endl;
+        
+
+        while (true){
+
+            
+            cin >> date;
+
+            if (date.find('/') != std::string::npos){
+                month = date.substr(0,date.find('/'));
+                date = date.substr(date.find('/')+1);
+
+                if (date.find('/') != std::string::npos){
+                    day = date.substr(0,date.find('/'));
+                    year = date.substr(date.find('/')+1);
+
+
+                    int monthInt = stoi(month);
+                    int dayInt = stoi(day);
+                    int yearInt = stoi(year);
+
+                    if(monthInt > 0 && monthInt < 13 && dayInt > 0 && dayInt < 32){
+                        break;
+                    }
+                }
+            }
+
+            cout << "Please use format (MM/DD/YYYY)";
+
+        }
+
+        
+
+        cout << month << endl << day << endl << year << endl;
+
     }
     entryIO();
 }
@@ -155,7 +193,7 @@ void addClass()
     cin >> className;
     while (true)
     {
-        cout << "Would you like to populate this class now?" << endl << "1. Yes" << endl << "2. No" << endl << endl;
+        cout << "Successfully added class. Would you like to populate this class now?" << endl << "1. Yes" << endl << "2. No" << endl << endl;
         char popClassBool;
         cin >> popClassBool;
         if (popClassBool == '1')
