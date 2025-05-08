@@ -70,7 +70,7 @@ void DBAbstraction::getAllStudents()
         string lastName = reinterpret_cast<const
             char*>(sqlite3_column_text(stmt, 2));
         //print out the student info
-        cout << ", First Name: " << firstName << ", Last Name: " << lastName << endl;
+        cout << "ID: " << id << ", First Name: " << firstName << ", Last Name: " << lastName << endl;
     }
     sqlite3_finalize(stmt);
 }
