@@ -20,7 +20,7 @@ public:
     void editStudentLastName(int studentID, const string& newLastName);
     void editClassName(int classID, const string& newClassName);
     void getAllClasses();
-    //void recordAttendence();
+    void recordAttendence(int studentID, int classID, const string& date, const string& present);
     void getClassSummary(int classID);
     void getDaySummary(const string& date);
     void getStudentSummary(int studentID);
