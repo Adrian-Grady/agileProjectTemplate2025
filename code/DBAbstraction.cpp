@@ -26,6 +26,7 @@ void DBAbstraction::closeDB()
         db = nullptr;
     }
 }
+//Add new students to the database
 void DBAbstraction::addStudent(const string& firstName, const string& lastName)
 {
     const char* sql = "INSERT INTO Students (first_name, last_name) VALUES (?, ?);";
@@ -36,6 +37,7 @@ void DBAbstraction::addStudent(const string& firstName, const string& lastName)
         cerr << "Status Failed: " << sqlite3_errmsg(db) << endl;
         return;
     }
+    //bind the students names to the place holder
     sqlite3_bind_text(stmt, 1, firstName.c_str(), -1, SQLITE_STATIC);
         sqlite3_bind_text(stmt, 2, lastName.c_str(), -1, SQLITE_STATIC);
 
@@ -62,17 +64,17 @@ void DBAbstraction::getAllStudents()
     }
     while(sqlite3_step(stmt) == SQLITE_ROW)
     {
+        //extract the column values
         int id = sqlite3_column_int(stmt,0);
         string firstName = reinterpret_cast<const char*>(sqlite3_column_text(stmt,1));
         string lastName = reinterpret_cast<const
             char*>(sqlite3_column_text(stmt, 2));
-        
-        cout << "ID: " << id
-             << ", First Name: " << firstName
-             << ", Last Name: " << lastName << endl;
+        //print out the student info
+        cout << ", First Name: " << firstName << ", Last Name: " << lastName << endl;
     }
     sqlite3_finalize(stmt);
 }
+//update the students name lines 77 - 127
 void DBAbstraction::editStudentFirstName(int studentID, const string& newFirstName)
 {
     const char* sql = "UPDATE Students SET first_name = ? WHERE id = ?;";
