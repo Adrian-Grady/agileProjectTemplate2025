@@ -151,6 +151,28 @@ void DBAbstraction::editStudentLastName(int studentID, const string& newLastName
 }
 void DBAbstraction::editClassName(int classID, const string& newClassName)
 {
+    const char* sql = "UPDATE class SET class_name = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK)
+    {
+        cerr << "Preparation failed: " << sqlite3_errmsg(db) << endl;
+        return;
+    }
+
+    sqlite3_bind_text(stmt, 1, newClassName.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 2, classID);
+
+    if (sqlite3_step(stmt) != SQLITE_DONE)
+    {
+        cerr << "Update failed: " << sqlite3_errmsg(db) << endl;
+    }
+    else
+    {
+        cout << "Class name updated successfully." << endl;
+    }
+    sqlite3_finalize(stmt);
+
 }
 void DBAbstraction::getAllClasses()
 {
