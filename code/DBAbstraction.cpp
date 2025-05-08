@@ -149,6 +149,9 @@ void DBAbstraction::editStudentLastName(int studentID, const string& newLastName
 
     sqlite3_finalize(stmt);
 }
+void DBAbstraction::editClassName(int classID, const string& newClassName)
+{
+}
 void DBAbstraction::getAllClasses()
 {
     sqlite3_stmt* myStatement;
@@ -172,4 +175,24 @@ void DBAbstraction::getAllClasses()
     {
         cout << "Problem creating a prepared statement" << endl;
     }
+}
+
+void DBAbstraction::getClassSummary(int classID)
+{
+}
+
+void DBAbstraction::getDaySummary(const string& date)
+{
+}
+
+void DBAbstraction::getStudentSummary(int studentID)
+{
+}
+
+void DBAbstraction::enrollStudentInClass(int studentID, int classID)
+{
+}
+
+void DBAbstraction::removeStudentFromClass(int studentID, int classID)
+{
 }
