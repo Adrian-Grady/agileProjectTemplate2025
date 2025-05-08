@@ -14,6 +14,7 @@ public:
     
     void getAllStudents(); //prints all the students
     void addStudent(const string& firstName, const string& lastName); //add students
+    void addClass(const string& className);
     void editStudentFirstName(int studentID, const string& newFirstName);
     void editStudentLastName(int studentID, const string& newLastName);
     void getAllClasses();
