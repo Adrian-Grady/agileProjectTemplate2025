@@ -37,7 +37,7 @@ void DBAbstraction::addStudent(const string& firstName, const string& lastName)
         cerr << "Status Failed: " << sqlite3_errmsg(db) << endl;
         return;
     }
-    //bind the students names to the place holder
+    //put the students names to the place holder
     sqlite3_bind_text(stmt, 1, firstName.c_str(), -1, SQLITE_STATIC);
         sqlite3_bind_text(stmt, 2, lastName.c_str(), -1, SQLITE_STATIC);
 
@@ -85,7 +85,7 @@ void DBAbstraction::editStudentFirstName(int studentID, const string& newFirstNa
         cerr << "Preparation failed: " << sqlite3_errmsg(db) << endl;
         return;
     }
-
+    // put the info in the place it is suppose to be in 
     sqlite3_bind_text(stmt, 1, newFirstName.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_int(stmt, 2, studentID);
 
