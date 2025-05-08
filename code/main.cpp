@@ -120,6 +120,9 @@ void recordAttn()
 }
 void addStudent()
 {
+    bool continueAdding = true;
+    while (continueAdding){
+
     cout << "Please enter the new student's first name" << endl;
     string firstName;
     cin >> firstName;
@@ -127,8 +130,24 @@ void addStudent()
     string lastName;
     cin >> lastName;
     //commit to database
+    //db.addStudent(firstName, lastName);
+    cout << endl << "Successfully added student." << endl << "Add another?" << endl << "1. Yes" << "2. No" << endl;
+
+    string response;
+    cin >> response;
+
+    if (response == "2"){
+        continueAdding = false;
+    }
+        
+    while (response != "2" && response != "1"){
+        cout << "Invalid entry! Please try again." << endl << endl;
+        cin >> response;
+    }
+    }
     entryIO();
 }
+
 void addClass()
 {
     cout << "Please enter the class name" << endl;
