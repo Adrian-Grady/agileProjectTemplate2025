@@ -71,7 +71,7 @@ void DBAbstraction::addClass(const string& className)
     }
     else
     {
-        cout << "Student added successfully.\n";
+        cout << "Class added successfully.\n";
     }
     sqlite3_finalize(stmt);
 
