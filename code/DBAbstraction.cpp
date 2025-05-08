@@ -218,83 +218,6 @@ void DBAbstraction::enrollStudentInClass(int studentID, int classID)
 void DBAbstraction::removeStudentFromClass(int studentID, int classID)
 {
 }
-<<<<<<< HEAD
-void DBAbstraction::recordAttendance()
-{
-	cout << "Which class would you like to record attendance for?" << endl;
-//populate from database
-auto start = std::chrono::system_clock::now();
-auto legacyStart = std::chrono::system_clock::to_time_t(start);
-char tmBuff[30];
-ctime_s(tmBuff, sizeof(tmBuff), &legacyStart);
-cout << "What day do you wish to record attendance for?" << endl << "1. Use Current Time" << endl << "2. Enter a date." << endl;
-char inDateOpt = 0;
-cin >> inDateOpt;
-if (inDateOpt == '1')
-{
-    //select count(*) from className where class = currentClassName;
-    /*int classSize = result of above;
-    * vector<studentInfo> studentInfo;
-    * select studentName, studentID from student
-    * join Attendance on students.studentID, studentClassJoin.studentID
-    * join class on studentClassJoin.classID, class.classID
-    * where class.className = className
-    * insert into studentInfo all of the results of that
-    * for(studentInsertIterator = 0; studentInsertIterator < classSize; studentInsertIterator++)
-    * {
-    * cout << "Student: " << studentNames<studentInsertIterator> << endl << "Enter p for present, ea for excused absence, ua for unexcused absence, and l for late" << endl;
-    * string profIn;
-    * cin >> profIn
-    * insert into Attendance(studentID) values(profIn)
-    * }
-    */
-}
-else if (inDateOpt == '2')
-{
-    //select class.classID from className where class = currentClassName;
-    /*int classID = result of above;
-    * vector<studentInfo> studentInfo;
-    * select studentName, studentID from student
-    * join Attendance on students.studentID, studentClassJoin.studentID
-    * join class on studentClassJoin.classID, class.classID
-    * where class.className = className
-    * insert into studentInfo all of the results of that
-    * for(studentInsertIterator = 0; studentInsertIterator < studentInfo.size(); studentInsertIterator++)
-    * {
-    * cout << "Student: " << studentNames<studentInsertIterator> << endl << "Enter p for present, ea for excused absence, ua for unexcused absence, and l for late" << endl;
-    * string profIn;
-    * cin >> profIn
-   * insert into Attendance(studentID) values(profIn)
-   * join Class on Attendance.classID, Class.classID
-   * where Class.classID = classID
-    * }
-   */
-}
-}
-void DBAbstraction::editStudentAttendance()
-{
-	/*vector<string> classNames
-select Class.name from Class
-cout << Select their class from this list: << endl << classNames << endl;
- string className;
- cin >> className;
- vector<attendanceInfo> attnInfo;
-select Attendance.Date, Attendance.attendance from Attendance
- join class on Attendance.classID = Class.classID
- where Attendance.studentID = studentID and Class.Name = className
-insert everything into attnInfo
-cout << attnInfo << endl;
-cout << "Select the date to edit << endl;
-string dateToEdit;
-cin >> dateToEdit;
-cout << "Write the new attendance info" << endl;
-string newAttn;
-cin >> newAttn;
-insert into Attendance(attendance) values(newAttn) where Attendance.date = dateToEdit
-*/
-}
-
-=======
 void DBAbstraction::recordAttendence(int studentID, int classID, const string& date, const string& present)
 {
     const char* sql = "INSERT INTO Attendence (student_id, class_id, date, present) VALUES (?,?,?,?);";
@@ -321,4 +244,4 @@ void DBAbstraction::recordAttendence(int studentID, int classID, const string& d
 
     sqlite3_finalize(stmt);
 }
->>>>>>> 33708c1510bb1c4eb42799db1daae695e765e409
+
