@@ -201,14 +201,98 @@ void DBAbstraction::getAllClasses()
 
 void DBAbstraction::getClassSummary(int classID)
 {
+    sqlite3_stmt* myStatement;
+    const char* query = "SELECT DISTINCT Students.first_name, Students.last_name, Attendence.date, Attendence.present, Attendence.class_id, Attendence.id FROM Students, Attendence WHERE Attendence.class_id = ? AND Attendence.student_id = Students.id AND Attendence.date IS NOT NULL ORDER BY Attendence.date ASC; ";
+    int statusOfPrep = sqlite3_prepare_v2(db, query, -1, &myStatement, NULL);
+    sqlite3_bind_int(myStatement, 1, classID);
+   
+
+    if (statusOfPrep == SQLITE_OK)
+    {
+        int statusOfStep = sqlite3_step(myStatement);
+        while (statusOfStep == SQLITE_ROW)
+        {
+            const unsigned char* firstName = sqlite3_column_text(myStatement, 0);
+            const unsigned char* lastName = sqlite3_column_text(myStatement, 1);
+            const unsigned char* classDate = sqlite3_column_text(myStatement, 2);
+            const unsigned char* present = sqlite3_column_text(myStatement, 3); 
+            const unsigned char* classID = sqlite3_column_text(myStatement, 4);
+            const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
+
+            //need to cast and decide what to print still
+            statusOfStep = sqlite3_step(myStatement);
+        }
+
+        sqlite3_finalize(myStatement);
+    }
+    else
+    {
+        cout << "Problem creating a prepared statement" << endl;
+    }
 }
 
 void DBAbstraction::getDaySummary(const string& date)
 {
+    sqlite3_stmt* myStatement;
+    const char* query = "SELECT DISTINCT Students.first_name, Students.last_name, Attendence.date, Attendence.present, Attendence.class_id, Attendence.id, class.class_name FROM Students, Attendence, class WHERE Attendence.date = ? AND Attendence.student_id = Students.id AND Attendence.class_id = class.id AND Attendence.date IS NOT NULL ORDER BY Attendence.date ASC; ";
+    int statusOfPrep = sqlite3_prepare_v2(db, query, -1, &myStatement, NULL);
+    sqlite3_bind_text(myStatement, 1, date.c_str(), -1, SQLITE_STATIC);
+
+    if (statusOfPrep == SQLITE_OK)
+    {
+        int statusOfStep = sqlite3_step(myStatement);
+        while (statusOfStep == SQLITE_ROW)
+        {
+            const unsigned char* firstName = sqlite3_column_text(myStatement, 0);
+            const unsigned char* lastName = sqlite3_column_text(myStatement, 1);
+            const unsigned char* classDate = sqlite3_column_text(myStatement, 2);
+            const unsigned char* present = sqlite3_column_text(myStatement, 3);
+            const unsigned char* classID = sqlite3_column_text(myStatement, 4);
+            const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
+            const unsigned char* className = sqlite3_column_text(myStatement, 6);
+
+            //need to cast and decide what to print still
+            statusOfStep = sqlite3_step(myStatement);
+        }
+
+        sqlite3_finalize(myStatement);
+    }
+    else
+    {
+        cout << "Problem creating a prepared statement" << endl;
+    }
 }
 
 void DBAbstraction::getStudentSummary(int studentID)
 {
+    sqlite3_stmt* myStatement;
+    const char* query = "SELECT DISTINCT Students.first_name, Students.last_name, Attendence.date, Attendence.present, Attendence.class_id, Attendence.id, class.class_name FROM Students, Attendence, class WHERE Attendence.student_id = ? AND Attendence.student_id = Students.id AND Attendence.class_id = class.id AND Attendence.date IS NOT NULL ORDER BY Attendence.date ASC; ";
+    int statusOfPrep = sqlite3_prepare_v2(db, query, -1, &myStatement, NULL);
+    sqlite3_bind_int(myStatement, 1, studentID);
+
+    if (statusOfPrep == SQLITE_OK)
+    {
+        int statusOfStep = sqlite3_step(myStatement);
+        while (statusOfStep == SQLITE_ROW)
+        {
+            const unsigned char* firstName = sqlite3_column_text(myStatement, 0);
+            const unsigned char* lastName = sqlite3_column_text(myStatement, 1);
+            const unsigned char* classDate = sqlite3_column_text(myStatement, 2);
+            const unsigned char* present = sqlite3_column_text(myStatement, 3);
+            const unsigned char* classID = sqlite3_column_text(myStatement, 4);
+            const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
+            const unsigned char* className = sqlite3_column_text(myStatement, 6);
+
+            //need to cast and decide what to print still
+            statusOfStep = sqlite3_step(myStatement);
+        }
+
+        sqlite3_finalize(myStatement);
+    }
+    else
+    {
+        cout << "Problem creating a prepared statement" << endl;
+    }
 }
 
 void DBAbstraction::enrollStudentInClass(int studentID, int classID)
