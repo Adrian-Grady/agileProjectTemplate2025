@@ -181,22 +181,21 @@ void DBAbstraction::getAllClasses()
     int statusOfPrep = sqlite3_prepare_v2(db, query, -1, &myStatement, NULL);
 
     if (statusOfPrep == SQLITE_OK)
-    {
-        int statusOfStep = sqlite3_step(myStatement);
-        while (statusOfStep == SQLITE_ROW)
         {
-            const unsigned char* classID = sqlite3_column_text(myStatement, 0);
-            const unsigned char* className = sqlite3_column_text(myStatement, 1);
+            cout << "Class List:\n";
+            while (sqlite3_step(myStatement) == SQLITE_ROW)
+            {
+                int classID = sqlite3_column_int(myStatement, 0);
+                const unsigned char* className = sqlite3_column_text(myStatement, 1);
 
-            statusOfStep = sqlite3_step(myStatement);
+                cout << "Class ID: " << classID << ", Class Name: " << className << endl;
+            }
+            sqlite3_finalize(myStatement);
         }
-
-        sqlite3_finalize(myStatement);
-    }
-    else
-    {
-        cout << "Problem creating a prepared statement" << endl;
-    }
+        else
+        {
+            cerr << "Problem creating prepared statement: " << sqlite3_errmsg(db) << endl;
+        }
 }
 
 void DBAbstraction::getClassSummary(int classID)
@@ -295,12 +294,42 @@ void DBAbstraction::getStudentSummary(int studentID)
     }
 }
 
-void DBAbstraction::enrollStudentInClass(int studentID, int classID)
+void DBAbstraction::enrollStudentInClass(int studentID, int classID, const string& presentStatus)
 {
+    string sql = "INSERT INTO Attendance (student_id, class_id, date, present) VALUES (?, ?, DATE('now'), ?);";
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+        sqlite3_bind_int(stmt, 1, studentID);
+        sqlite3_bind_int(stmt, 2, classID);
+        sqlite3_bind_text(stmt, 3, presentStatus.c_str(), -1, SQLITE_STATIC);
+
+        if (sqlite3_step(stmt) != SQLITE_DONE) {
+            cerr << "Error enrolling student: " << sqlite3_errmsg(db) << endl;
+        }
+    } else {
+        cerr << "SQL error: " << sqlite3_errmsg(db) << endl;
+    }
+
+    sqlite3_finalize(stmt);
 }
 
-void DBAbstraction::removeStudentFromClass(int studentID, int classID)
-{
+void DBAbstraction::removeStudentFromClass(int studentID, int classID) {
+    string sql = "DELETE FROM Attendance WHERE student_id = ? AND class_id = ?;";
+
+    sqlite3_stmt* stmt;
+    if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
+        sqlite3_bind_int(stmt, 1, studentID);
+        sqlite3_bind_int(stmt, 2, classID);
+
+        if (sqlite3_step(stmt) != SQLITE_DONE) {
+            cerr << "Error removing student: " << sqlite3_errmsg(db) << endl;
+        }
+    } else {
+        cerr << "SQL prepare error: " << sqlite3_errmsg(db) << endl;
+    }
+
+    sqlite3_finalize(stmt);
 }
 void DBAbstraction::recordAttendence(int studentID, int classID, const string& date, const string& present)
 {
