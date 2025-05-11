@@ -296,7 +296,7 @@ void DBAbstraction::getStudentSummary(int studentID)
 
 void DBAbstraction::enrollStudentInClass(int studentID, int classID, const string& presentStatus)
 {
-    string sql = "INSERT INTO Attendance (student_id, class_id, date, present) VALUES (?, ?, DATE('now'), ?);";
+    string sql = "INSERT INTO Attendence (student_id, class_id, date, present) VALUES (?, ?, ?, ?);";
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
@@ -315,7 +315,7 @@ void DBAbstraction::enrollStudentInClass(int studentID, int classID, const strin
 }
 
 void DBAbstraction::removeStudentFromClass(int studentID, int classID) {
-    string sql = "DELETE FROM Attendance WHERE student_id = ? AND class_id = ?;";
+    string sql = "DELETE FROM Attendence WHERE student_id = ? AND class_id = ?;";
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
@@ -348,13 +348,12 @@ void DBAbstraction::recordAttendence(int studentID, int classID, const string& d
 
     if (sqlite3_step(stmt) != SQLITE_DONE)
     {
-        cerr << "Failed to record attendance: " << sqlite3_errmsg(db) << endl;
+        cerr << "Failed to record attendence: " << sqlite3_errmsg(db) << endl;
     }
     else
     {
-        cout << "Attendance recorded: " << present << " for student " << studentID << " on " << date << endl;
+        cout << "Attendence recorded: " << present << " for student " << studentID << " on " << date << endl;
     }
-
     sqlite3_finalize(stmt);
 }
 
