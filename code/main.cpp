@@ -17,7 +17,7 @@ int main()
 }
 void entryIO()
 {
-    cout << "Hello, Professor! What would you like to do? \n" << endl << "1. Summary" << endl << "2. Record Attendance" << endl << "3. Edit or Add Students or Classes" << endl << endl;
+    cout << "Hello, Professor" << endl << "1. Summary" << endl << "2. Record Attendance" << endl << "3. Edit or Add Students or Classes" << endl;
     char inChar = 0;
 
     cin.clear();
@@ -33,7 +33,7 @@ void entryIO()
     }
     else if (inChar == '3')
     {
-        cout << "1. Add Student" << endl << "2. Add Class" << endl << "3. Edit Student" << endl << "4. Edit Class" << endl << "5. Return to Top" << endl << endl;
+        cout << "1. Add Student" << endl << "2. Add Class" << endl << "3. Edit Student" << endl << "4. Edit Class" << endl << "5. Return to Top" << endl;
         char charEditAdd;
         cin >> charEditAdd;
         cin.clear();
@@ -72,7 +72,7 @@ void entryIO()
 }
 void getSummary()
 {
-    cout << "Which summary would you like?" << endl << "1. Summary of the entire class" << endl << "2. Summary of one day" << endl << "3. Summary of one student" << endl << "4. Return to Top" << endl << endl;
+    cout << "Which summary would you like?" << endl << "1. Summary of the entire class" << endl << "2. Summary of one day" << endl << "3. Summary of one student" << endl << "4. Return to Top" << endl;
     int sumIn;
     cin >> sumIn;
     if (sumIn == 1)
@@ -106,7 +106,7 @@ void recordAttn()
     auto legacyStart = std::chrono::system_clock::to_time_t(start);
     char tmBuff[30];
     ctime_s(tmBuff, sizeof(tmBuff), &legacyStart);
-    cout << "What day do you wish to record attendance for?" << endl << "1. Use Current Time" << endl << "2. Enter a date." << endl << endl;
+    cout << "What day do you wish to record attendance for?" << endl << "1. Use Current Time" << endl << "2. Enter a date." << endl;
     char inDateOpt = 0;
     cin >> inDateOpt;
     if (inDateOpt == '1')
@@ -193,7 +193,7 @@ void addClass()
     cin >> className;
     while (true)
     {
-        cout << "Successfully added class. Would you like to populate this class now?" << endl << "1. Yes" << endl << "2. No" << endl << endl;
+        cout << "Successfully added class. Would you like to populate this class now?" << endl << "1. Yes" << endl << "2. No" << endl << end;
         char popClassBool;
         cin >> popClassBool;
         if (popClassBool == '1')
@@ -219,7 +219,7 @@ void editStudent()
     //populate from database
     while (true)
     {
-        cout << "What would you like to edit about them?" << endl << "1. First Name" << endl << "2. Last Name" << endl << "3. Edit Attendance" << endl << "4. Edit Class Enrollment" << endl << endl;
+        cout << "What would you like to edit about them?" << endl << "1. First Name" << endl << "2. Last Name" << endl << "3. Edit Attendance" << endl << "4. Edit Class Enrollment" << endl;
         char editStudentChar;
         cin >> editStudentChar;
         if (editStudentChar == '1')
@@ -253,7 +253,7 @@ void editClass()
 {
     cout << "Which class would you like to edit?" << endl;
     //populate from database
-    cout << "1. Enroll Student" << endl << "2. Remove Student" << endl << "3. Edit Class Name" << endl << "4. Add Custom Order" << endl << endl;
+    cout << "1. Enroll Student" << endl << "2. Remove Student" << endl << "3. Edit Class Name" << endl << "4. Add Custom Order" << endl;
     char editClassChar;
     cin >> editClassChar;
     if (editClassChar == '1')
