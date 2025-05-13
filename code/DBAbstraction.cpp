@@ -217,6 +217,7 @@ void DBAbstraction::getClassSummary(int classID)
             const unsigned char* present = sqlite3_column_text(myStatement, 3); 
             const unsigned char* classID = sqlite3_column_text(myStatement, 4);
             const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
+            cout << firstName << " " << lastName << " " << present << " on " << classDate << endl;
 
             //need to cast and decide what to print still
             statusOfStep = sqlite3_step(myStatement);
@@ -249,6 +250,7 @@ void DBAbstraction::getDaySummary(const string& date)
             const unsigned char* classID = sqlite3_column_text(myStatement, 4);
             const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
             const unsigned char* className = sqlite3_column_text(myStatement, 6);
+            cout << firstName << " " << lastName << " " << present << " on " << classDate << " in " << className << endl;
 
             //need to cast and decide what to print still
             statusOfStep = sqlite3_step(myStatement);
@@ -281,6 +283,7 @@ void DBAbstraction::getStudentSummary(int studentID)
             const unsigned char* classID = sqlite3_column_text(myStatement, 4);
             const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
             const unsigned char* className = sqlite3_column_text(myStatement, 6);
+            cout << present << " on " << classDate << " in " << className << endl;
 
             //need to cast and decide what to print still
             statusOfStep = sqlite3_step(myStatement);
