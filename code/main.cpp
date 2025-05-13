@@ -193,7 +193,7 @@ void addClass()
     cin >> className;
     while (true)
     {
-        cout << "Successfully added class. Would you like to populate this class now?" << endl << "1. Yes" << endl << "2. No" << endl << end;
+        cout << "Successfully added class. Would you like to populate this class now?" << endl << "1. Yes" << endl << "2. No" << endl << endl;
         char popClassBool;
         cin >> popClassBool;
         if (popClassBool == '1')
