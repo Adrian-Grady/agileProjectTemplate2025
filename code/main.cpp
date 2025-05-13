@@ -1,13 +1,9 @@
 #include <iostream>
 #include <ctime>
 #include <chrono>
-<<<<<<< HEAD
 #include "DBAbstraction.h"
 #include <vector>
-=======
 #include <string>
-#include "DBAbstraction.h"
->>>>>>> c0205a8e14dd1adf5d70446b0e125ec6909fe130
 using namespace std;
 void entryIO();
 void getSummary();
@@ -16,11 +12,7 @@ void addStudent();
 void addClass();
 void editStudent();
 void editClass();
-<<<<<<< HEAD
-DBAbstraction dbase;
-=======
 DBAbstraction dbase("attendence.db");
->>>>>>> c0205a8e14dd1adf5d70446b0e125ec6909fe130
 int main()
 {
     entryIO();
@@ -89,15 +81,26 @@ void getSummary()
     cin >> sumIn;
     if (sumIn == 1)
     {
-        dbase.getClassSummary();
+        cout << "Select a class:" << endl;
+        dbase.getAllClasses();
+        char classSelection;
+        cin >> classSelection;
+        dbase.getClassSummary(classSelection);
     }
     else if (sumIn == 2)
     {
-        dbase.getDaySummary();
+        cout << "Enter a date:" << endl;
+        string dateSelection;
+        cin >> dateSelection;
+        dbase.getDaySummary(dateSelection);
     }
     else if (sumIn == 3)
     {
-        dbase.getStudentSummary();
+        cout << "Select a student:" << endl;
+        dbase.getAllStudents();
+        char studentSelection;
+        cin >> studentSelection;
+        dbase.getStudentSummary(studentSelection);
     }
     else if (sumIn == 4)
     {
@@ -115,7 +118,7 @@ void recordAttn()
 {
     dbase.getAllClasses();
     cout << "Which class would you like to record attendance for?" << endl;
-    string classID;
+    char classID;
     cin >> classID;
     auto start = std::chrono::system_clock::now();
     auto legacyStart = std::chrono::system_clock::to_time_t(start);
@@ -131,15 +134,15 @@ void recordAttn()
         int year = localtime.tm_year + 1900;
         int month = localtime.tm_mon + 1;
         int day = localtime.tm_mday;
-        string date = day + "/" + month + "/" + year;
+        string date = to_string(day) + "/" + to_string(month) + "/" + to_string(year);
         vector<int> allStudents = dbase.getStudentsInClass(classID);
-        foreach(int studentID : allStudents)
+        for each(int studentID in allStudents)
         {
             string name = dbase.getStudentFromID(studentID);
             cout << "Student ID: " << studentID << name << endl;
             string attnData;
             cin >> attnData;
-            dbase.recordAttendance(studentID, classID, date, attnData);
+            dbase.recordAttendence(studentID, classID, date, attnData);
         }
 
 ;    }
@@ -150,13 +153,13 @@ void recordAttn()
         cin >> date;
 
         vector<int> allStudents = dbase.getStudentFromClass(classID);
-        foreach(int studentID : allStudents)
+        for each(int studentID in allStudents)
         {
             string name = dbase.getName(studentID);
             cout << "Student ID: " << studentID << name << endl;
             string attnData;
             cin >> attnData;
-            dbase.recordAttendance(studentID, classID, date, attnData);
+            dbase.recordAttendence(studentID, classID, date, attnData);
         }
     }
     entryIO();
@@ -262,18 +265,18 @@ void editStudent()
             cout << "Enter the new attendance record" << endl;
             string attnRec;
             cin >> attnRec;
-            dbase.recordAttendence(stuID, classID, newDate, attnRec)
+            dbase.recordAttendence(stuID, classID, newDate, attnRec);
             break;
         }
         else if (editStudentChar == '4')
         {
             cout << "1. Add student to class" << endl << "2. Remove student from class" << endl;
-            string editEnrollBool;
+            char editEnrollBool;
             cin >> editEnrollBool;
             dbase.getAllClasses();
 
             cout << "Enter the class ID" << endl;
-            string classID;
+            char classID;
             cin >> classID;
             if (editEnrollBool == '1')
             {
