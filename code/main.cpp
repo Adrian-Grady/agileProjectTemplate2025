@@ -137,7 +137,7 @@ void recordAttn()
         int day = currTime->tm_mday;
         string date = to_string(day) + "/" + to_string(month) + "/" + to_string(year);
         vector<int> allStudents = dbase.getStudentsInClass(classID);
-        for each(int studentID in allStudents)
+        for (int studentID : allStudents)
         {
             string name = dbase.getStudentFromID(studentID);
             cout << "Student ID: " << studentID << name << endl;
@@ -146,7 +146,7 @@ void recordAttn()
             dbase.recordAttendence(studentID, classID, date, attnData);
         }
 
-;    }
+    }
     else if (inDateOpt == '2')
     {
         cout << "Enter the date you wish to edit" << endl;
@@ -154,7 +154,7 @@ void recordAttn()
         cin >> date;
 
         vector<int> allStudents = dbase.getStudentsInClass(classID);
-        for each(int studentID in allStudents)
+        for (int studentID : allStudents)
         {
             string name = dbase.getStudentFromID(studentID);
             cout << "Student ID: " << studentID << name << endl;
