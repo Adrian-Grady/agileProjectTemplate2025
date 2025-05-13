@@ -1,6 +1,8 @@
 #include <iostream>
 #include <ctime>
 #include <chrono>
+#include "DBAbstraction.h"
+#include <vector>
 using namespace std;
 void entryIO();
 void getSummary();
@@ -9,6 +11,7 @@ void addStudent();
 void addClass();
 void editStudent();
 void editClass();
+DBAbstraction dbase;
 int main()
 {
     entryIO();
@@ -76,12 +79,15 @@ void getSummary()
     cin >> sumIn;
     if (sumIn == 1)
     {
+        dbase.getClassSummary();
     }
     else if (sumIn == 2)
     {
+        dbase.getDaySummary();
     }
     else if (sumIn == 3)
     {
+        dbase.getStudentSummary();
     }
     else if (sumIn == 4)
     {
@@ -96,18 +102,50 @@ void getSummary()
 }
 void recordAttn()
 {
+    dbase.getAllClasses();
     cout << "Which class would you like to record attendance for?" << endl;
+    string classID;
+    cin >> classID;
     auto start = std::chrono::system_clock::now();
     auto legacyStart = std::chrono::system_clock::to_time_t(start);
     char tmBuff[30];
     ctime_s(tmBuff, sizeof(tmBuff), &legacyStart);
+    cout << "What day do you wish to record attendance for?" << endl << "1. Use current time" << endl << "2. Enter a date." << endl;
+    cout << "Enter p for present, l for late, ea for excused absence, and ua for unexcused absence." << endl;
     char inDateOpt = 0;
     cin >> inDateOpt;
     if (inDateOpt == '1')
     {
+        tm localtime = *localtime(&legacyStart);
+        int year = localtime.tm_year + 1900;
+        int month = localtime.tm_mon + 1;
+        int day = localtime.tm_mday;
+        string date = day + "/" + month + "/" + year;
+        vector<int> allStudents = dbase.getStudentsInClass(classID);
+        foreach(int studentID : allStudents)
+        {
+            string name = dbase.getStudentFromID(studentID);
+            cout << "Student ID: " << studentID << name << endl;
+            string attnData;
+            cin >> attnData;
+            dbase.recordAttendance(studentID, classID, date, attnData);
+        }
+
+;    }
     else if (inDateOpt == '2')
     {
+        cout << "Enter the date you wish to edit" << endl;
+        string date;
+        cin >> date;
 
+        vector<int> allStudents = dbase.getStudentFromClass(classID);
+        foreach(int studentID : allStudents)
+        {
+            string name = dbase.getName(studentID);
+            cout << "Student ID: " << studentID << name << endl;
+            string attnData;
+            cin >> attnData;
+            dbase.recordAttendance(studentID, classID, date, attnData);
         }
     }
     entryIO();
@@ -123,6 +161,7 @@ void addStudent()
     cout << "Please enter the new student's last name" << endl;
     string lastName;
     cin >> lastName;
+    dbase.addStudent(firstName, lastName);
     cout << endl << "Successfully added student." << endl << "Add another?" << endl << "1. Yes" << "2. No" << endl;
 
     string response;
@@ -133,6 +172,7 @@ void addStudent()
     }
         
     while (response != "2" && response != "1"){
+        cout << "Invalid entry! Please try again." << endl;
         cin >> response;
     }
     }
@@ -146,6 +186,7 @@ void addClass()
     cin >> className;
     while (true)
     {
+        cout << "Would you like to populate this class now?" << endl << "1. Yes" << endl << "2. No" << endl;
         char popClassBool;
         cin >> popClassBool;
         if (popClassBool == '1')
@@ -168,6 +209,10 @@ void addClass()
 void editStudent()
 {
     cout << "Which student would you like to edit?" << endl;
+    dbase.getAllStudents();
+    cout << "Enter the selected student ID number" << endl;
+    int stuID;
+    cin >> stuID;
     while (true)
     {
         cout << "What would you like to edit about them?" << endl << "1. First Name" << endl << "2. Last Name" << endl << "3. Edit Attendance" << endl << "4. Edit Class Enrollment" << endl;
@@ -175,18 +220,60 @@ void editStudent()
         cin >> editStudentChar;
         if (editStudentChar == '1')
         {
+            cout << "Enter their new first name" << endl;
+            string newFirstName;
+            cin >> newFirstName;
+            dbase.editStudentFirstName(stuID, newFirstName);
             break;
         }
         else if (editStudentChar == '2')
         {
+
+            cout << "Enter their new last name" << endl;
+            string newLastName;
+            cin >> newLastName;
+            dbase.editStudentLastName(stuID, newLastName);
             break;
         }
         else if (editStudentChar == '3')
         {
+            dbase.getStudentSummary(stuID);
+            cout << "Enter the class ID" << endl;
+            int classID;
+            cin >> classID;
+            dbase.getClassSummary(classID);
+            cout << "Enter the date you wish to edit" << endl;
+            string newDate;
+            cin >> newDate;
+            cout << "Enter the new attendance record" << endl;
+            string attnRec;
+            cin >> attnRec;
+            dbase.recordAttendence(stuID, classID, newDate, attnRec)
             break;
         }
         else if (editStudentChar == '4')
         {
+            cout << "1. Add student to class" << endl << "2. Remove student from class" << endl;
+            string editEnrollBool;
+            cin >> editEnrollBool;
+            dbase.getAllClasses();
+
+            cout << "Enter the class ID" << endl;
+            string classID;
+            cin >> classID;
+            if (editEnrollBool == '1')
+            {
+                dbase.enrollStudentInClass(stuID, classID);
+            }
+            else if (editEnrollBool == '2')
+            {
+                dbase.removeStudentFromClass(stuID, classID);
+            }
+            else
+            {
+                cout << "Invalid info! Please try again." << endl;
+                editStudent();
+            }
             break;
         }
         else
