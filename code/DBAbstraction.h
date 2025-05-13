@@ -30,7 +30,7 @@ public:
     string getStudentFromID(int studentId);
     vector<int> getStudentsInClass(int classID);
     void printAllStudentsInClass(int classID);
-    vector<int>getAllStudentsIDsOrderByLastName();
+    vector<int>getAllStudentsIDsOrderByLastName(int classID);
     
     
 
