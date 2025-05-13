@@ -297,16 +297,14 @@ void DBAbstraction::getStudentSummary(int studentID)
     }
 }
 
-void DBAbstraction::enrollStudentInClass(int studentID, int classID, const string& date, const string& presentStatus)
+void DBAbstraction::enrollStudentInClass(int studentID, int classID)
 {
-    string sql = "INSERT INTO Attendence (student_id, class_id, date, present) VALUES (?, ?, ?, ?);";
+    string sql = "INSERT INTO Attendence (student_id, class_id, date, present) VALUES (?, ?, NULL, NULL);";
 
     sqlite3_stmt* stmt;
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
         sqlite3_bind_int(stmt, 1, studentID);
         sqlite3_bind_int(stmt, 2, classID);
-        sqlite3_bind_text(stmt, 3, date.c_str(), -1, SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 4, presentStatus.c_str(), -1, SQLITE_STATIC);
 
         if (sqlite3_step(stmt) != SQLITE_DONE) {
             cerr << "Error enrolling student: " << sqlite3_errmsg(db) << endl;
