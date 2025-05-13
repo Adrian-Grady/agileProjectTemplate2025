@@ -121,7 +121,9 @@ void recordAttn()
     char classID;
     cin >> classID;
     auto start = std::chrono::system_clock::now();
-    auto legacyStart = std::chrono::system_clock::to_time_t(start);
+    time_t legacyStart = std::chrono::system_clock::to_time_t(start);
+    time_t np = time(0);
+    tm* currTime = localtime(&np);
     char tmBuff[30];
     ctime_s(tmBuff, sizeof(tmBuff), &legacyStart);
     cout << "What day do you wish to record attendance for?" << endl << "1. Use current time" << endl << "2. Enter a date." << endl;
@@ -130,10 +132,9 @@ void recordAttn()
     cin >> inDateOpt;
     if (inDateOpt == '1')
     {
-        tm localtime = *localtime(&legacyStart);
-        int year = localtime.tm_year + 1900;
-        int month = localtime.tm_mon + 1;
-        int day = localtime.tm_mday;
+        int year = currTime->tm_year + 1900;
+        int month = currTime->tm_mon + 1;
+        int day = currTime->tm_mday;
         string date = to_string(day) + "/" + to_string(month) + "/" + to_string(year);
         vector<int> allStudents = dbase.getStudentsInClass(classID);
         for each(int studentID in allStudents)
