@@ -1,13 +1,9 @@
 #include <iostream>
 #include <ctime>
 #include <chrono>
-<<<<<<< HEAD
 #include "DBAbstraction.h"
 #include <vector>
-=======
 #include <string>
-#include "DBAbstraction.h"
->>>>>>> c0205a8e14dd1adf5d70446b0e125ec6909fe130
 using namespace std;
 void entryIO();
 void getSummary();
@@ -16,11 +12,7 @@ void addStudent();
 void addClass();
 void editStudent();
 void editClass();
-<<<<<<< HEAD
-DBAbstraction dbase;
-=======
 DBAbstraction dbase("attendence.db");
->>>>>>> c0205a8e14dd1adf5d70446b0e125ec6909fe130
 int main()
 {
     entryIO();
