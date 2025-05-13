@@ -2,6 +2,7 @@
 #include <iostream>
 #include "sqlite3.h"
 #include <string>
+#include <vector>
 
 
 using namespace std;
@@ -19,13 +20,16 @@ public:
     void editStudentFirstName(int studentID, const string& newFirstName);
     void editStudentLastName(int studentID, const string& newLastName);
     void editClassName(int classID, const string& newClassName);
-    void getAllClasses();
     void recordAttendence(int studentID, int classID, const string& date, const string& present);
     void getClassSummary(int classID);
     void getDaySummary(const string& date);
     void getStudentSummary(int studentID);
-    void enrollStudentInClass(int studentID, int classID, const string& date, const string& presentStatus);
+    void enrollStudentInClass(int studentID, int classID);
     void removeStudentFromClass(int studentID, int classID);
+    string getStudentFromID(int studentId);
+    vector<int> getStudentsInClass(int classID);
+    void printAllStudentsInClass(int classID);
+    
     
 
 private:

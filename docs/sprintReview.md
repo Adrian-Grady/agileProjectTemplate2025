@@ -2,17 +2,13 @@
 
 ### Sprint #X:
 - **Completed User Stories:**
-  - [List completed user stories]
-- **Demo Summary:**
-  - [Summarize demo results if applicable]
+  - Completed User stories 1 -7 
 - **Unfinished Work:**
-  - [List items that were not completed and why]
-- **Stakeholder Feedback:**
-  - [Feedback from the review meeting]
+  - We are finishing up the merge to include the backend with the front in to ensure everything lines up correctly and runs 
 - **Process**
   - **Start:**
-    - [What should we start doing?]
-  - **Stop:**
-    - [What should we stop doing?]
-  - **Continue:**
-    - [What worked well and should continue?]
+    - start by adding in backend functions and testing them 
+- FeedBack
+ - how well your group communicated?
+    - We communicated as a team really well working through problems and figuring out a outcome.
+ 
