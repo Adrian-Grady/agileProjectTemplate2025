@@ -388,9 +388,31 @@ vector<int> DBAbstraction::getStudentsInClass(int classID)
 
     return studentIDs;
 }
-vector<int> DBAbstraction::getAllStudentsIDsOrderByLastName()
+vector<int> DBAbstraction::getAllStudentsIDsOrderByLastName(int classID)
 {
-    
+    sqlite3_stmt* myStatement;
+    const char* query = "SELECT Students.id FROM Students WHERE Students.id IN( SELECT DISTINCT Attendence.student_id FROM Attendence WHERE Attendence.date IS NULL AND Attendence.class_id = ?) ORDER BY Students.last_name ASC";
+    int statusOfPrep = sqlite3_prepare_v2(db, query, -1, &myStatement, NULL);
+    sqlite3_bind_int(myStatement, 1, classID);
+    vector<int> studentIDs;
+    if (statusOfPrep == SQLITE_OK)
+    {
+        int statusOfStep = sqlite3_step(myStatement);
+        while (statusOfStep == SQLITE_ROW)
+        {
+            const unsigned char* id = sqlite3_column_text(myStatement, 0);
+            studentIDs.push_back(int(reinterpret_cast<const char*>(id)));
+            statusOfStep = sqlite3_step(myStatement);
+        }
+
+        sqlite3_finalize(myStatement);
+    }
+    else
+    {
+        cout << "Problem creating a prepared statement" << endl;
+    }
+
+    return studentIDs;
 }
 void DBAbstraction::printAllStudentsInClass(int classID)
 {
