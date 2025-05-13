@@ -388,6 +388,10 @@ vector<int> DBAbstraction::getStudentsInClass(int classID)
 
     return studentIDs;
 }
+vector<int> DBAbstraction::getAllStudentsIDsOrderByLastName()
+{
+    
+}
 void DBAbstraction::printAllStudentsInClass(int classID)
 {
     sqlite3_stmt* stmt;
