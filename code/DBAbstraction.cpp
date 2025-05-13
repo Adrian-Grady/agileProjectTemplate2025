@@ -217,6 +217,7 @@ void DBAbstraction::getClassSummary(int classID)
             const unsigned char* present = sqlite3_column_text(myStatement, 3); 
             const unsigned char* classID = sqlite3_column_text(myStatement, 4);
             const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
+            cout << firstName << " " << lastName << " " << present << " on " << classDate << endl;
 
             //need to cast and decide what to print still
             statusOfStep = sqlite3_step(myStatement);
@@ -249,6 +250,7 @@ void DBAbstraction::getDaySummary(const string& date)
             const unsigned char* classID = sqlite3_column_text(myStatement, 4);
             const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
             const unsigned char* className = sqlite3_column_text(myStatement, 6);
+            cout << firstName << " " << lastName << " " << present << " on " << classDate << " in " << className << endl;
 
             //need to cast and decide what to print still
             statusOfStep = sqlite3_step(myStatement);
@@ -281,6 +283,7 @@ void DBAbstraction::getStudentSummary(int studentID)
             const unsigned char* classID = sqlite3_column_text(myStatement, 4);
             const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
             const unsigned char* className = sqlite3_column_text(myStatement, 6);
+            cout << present << " on " << classDate << " in " << className << endl;
 
             //need to cast and decide what to print still
             statusOfStep = sqlite3_step(myStatement);
@@ -294,7 +297,7 @@ void DBAbstraction::getStudentSummary(int studentID)
     }
 }
 
-void DBAbstraction::enrollStudentInClass(int studentID, int classID, const string& presentStatus)
+void DBAbstraction::enrollStudentInClass(int studentID, int classID, const string& date, const string& presentStatus)
 {
     string sql = "INSERT INTO Attendence (student_id, class_id, date, present) VALUES (?, ?, ?, ?);";
 
@@ -302,7 +305,8 @@ void DBAbstraction::enrollStudentInClass(int studentID, int classID, const strin
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) == SQLITE_OK) {
         sqlite3_bind_int(stmt, 1, studentID);
         sqlite3_bind_int(stmt, 2, classID);
-        sqlite3_bind_text(stmt, 3, presentStatus.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, date.c_str(), -1, SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 4, presentStatus.c_str(), -1, SQLITE_STATIC);
 
         if (sqlite3_step(stmt) != SQLITE_DONE) {
             cerr << "Error enrolling student: " << sqlite3_errmsg(db) << endl;

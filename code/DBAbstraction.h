@@ -24,7 +24,7 @@ public:
     void getClassSummary(int classID);
     void getDaySummary(const string& date);
     void getStudentSummary(int studentID);
-    void enrollStudentInClass(int studentID, int classID);
+    void enrollStudentInClass(int studentID, int classID, const string& date, const string& presentStatus);
     void removeStudentFromClass(int studentID, int classID);
     
 
