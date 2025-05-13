@@ -1,8 +1,13 @@
 #include <iostream>
 #include <ctime>
 #include <chrono>
+<<<<<<< HEAD
 #include "DBAbstraction.h"
 #include <vector>
+=======
+#include <string>
+#include "DBAbstraction.h"
+>>>>>>> c0205a8e14dd1adf5d70446b0e125ec6909fe130
 using namespace std;
 void entryIO();
 void getSummary();
@@ -11,7 +16,11 @@ void addStudent();
 void addClass();
 void editStudent();
 void editClass();
+<<<<<<< HEAD
 DBAbstraction dbase;
+=======
+DBAbstraction dbase("attendence.db");
+>>>>>>> c0205a8e14dd1adf5d70446b0e125ec6909fe130
 int main()
 {
     entryIO();
@@ -72,6 +81,7 @@ void entryIO()
         entryIO();
     }
 }
+
 void getSummary()
 {
     cout << "Which summary would you like?" << endl << "1. Summary of the entire class" << endl << "2. Summary of one day" << endl << "3. Summary of one student" << endl << "4. Return to Top" << endl;
@@ -100,6 +110,7 @@ void getSummary()
     }
     entryIO();
 }
+
 void recordAttn()
 {
     dbase.getAllClasses();
@@ -150,6 +161,7 @@ void recordAttn()
     }
     entryIO();
 }
+
 void addStudent()
 {
     bool continueAdding = true;
@@ -184,6 +196,7 @@ void addClass()
     cout << "Please enter the class name" << endl;
     string className;
     cin >> className;
+    dbase.addClass(className);
     while (true)
     {
         cout << "Would you like to populate this class now?" << endl << "1. Yes" << endl << "2. No" << endl;
@@ -206,6 +219,7 @@ void addClass()
     }
     entryIO();
 }
+
 void editStudent()
 {
     cout << "Which student would you like to edit?" << endl;
@@ -283,24 +297,75 @@ void editStudent()
     }
     entryIO();
 }
+
 void editClass()
 {
     cout << "Which class would you like to edit?" << endl;
     //populate from database
+    dbase.getAllClasses();
+    char classSelection;
+    cin >> classSelection;
     cout << "1. Enroll Student" << endl << "2. Remove Student" << endl << "3. Edit Class Name" << endl << "4. Add Custom Order" << endl;
     char editClassChar;
     cin >> editClassChar;
     if (editClassChar == '1')
     {
         //do stuff
+        bool continueAdding = true;
+        while (continueAdding){
+            cout << "Which student would you like to add?" << endl;
+            dbase.getAllStudents();
+            char studentSelection;
+            cin >> studentSelection;
+            dbase.enrollStudentInClass(studentSelection, classSelection);
+            cout << "Student added. Add another?" << endl;
+            char continueAddingSelection;
+            cin >> continueAddingSelection;
+            if (continueAddingSelection == '2'){
+                continueAdding = false;
+            }
+                
+            while (continueAddingSelection != '2' && continueAddingSelection != '1'){
+                cout << "Invalid entry! Please try again." << endl << endl;
+                cin >> continueAddingSelection;
+            }
+            }
+            entryIO(); 
+        
     }
     else if (editClassChar == '2')
     {
         //do stuff
+        bool continueAdding = true;
+        while (continueAdding){
+            cout << "Which student would you like to remove?" << endl;
+            dbase.getAllStudentsInClass(classSelection);
+            char studentSelection;
+            cin >> studentSelection;
+            dbase.removeStudentFromClass(studentSelection, classSelection);
+            cout << "Student removed. Remove another?" << endl;
+            char continueAddingSelection;
+            cin >> continueAddingSelection;
+            if (continueAddingSelection == '2'){
+                continueAdding = false;
+            }
+                
+            while (continueAddingSelection != '2' && continueAddingSelection != '1'){
+                cout << "Invalid entry! Please try again." << endl << endl;
+                cin >> continueAddingSelection;
+            }
+        }
+            entryIO(); 
     }
     else if (editClassChar == '3')
     {
         //do stuff
+        cout << "Enter new name for class:" << endl;
+        string newName;
+        cin >> newName;
+        dbase.editClassName(editClassChar, newName);
+        cout << "Name successfully changed." << endl;
+        entryIO();
     }
     else if (editClassChar == '4')
     {
