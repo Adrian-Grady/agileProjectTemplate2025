@@ -333,6 +333,34 @@ void DBAbstraction::removeStudentFromClass(int studentID, int classID) {
 
     sqlite3_finalize(stmt);
 }
+string DBAbstraction::getStudentFromID(int studentId)
+{
+    const char* sql = "INSERT INTO Attendence (student_id, class_id, date, present) VALUES (?,?,?,?);";
+    sqlite3_stmt* stmt;
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK)
+    {
+        cerr << "Failed to send student statement: " << sqlite3_errmsg(db) << endl;
+    }
+
+    if (sqlite3_step(stmt) != SQLITE_DONE)
+    {
+        cerr << "Failed to record attendence: " << sqlite3_errmsg(db) << endl;
+    }
+    else
+    {
+        cout << "Attendence recorded: " << present << " for student " << studentID << " on " << date << endl;
+    }
+    sqlite3_finalize(stmt);
+    return string();
+}
+vector<int> DBAbstraction::getStudentsInClass(int classID)
+{
+    return vector<int>();
+}
+void DBAbstraction::printAllStudentsInClass(int classID)
+{
+}
 void DBAbstraction::recordAttendence(int studentID, int classID, const string& date, const string& present)
 {
     const char* sql = "INSERT INTO Attendence (student_id, class_id, date, present) VALUES (?,?,?,?);";
