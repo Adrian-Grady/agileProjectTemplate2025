@@ -360,6 +360,34 @@ vector<int> DBAbstraction::getStudentsInClass(int classID)
 }
 void DBAbstraction::printAllStudentsInClass(int classID)
 {
+    sqlite3_stmt* stmt;
+    const char* sql =
+        "SELECT DISTINCT Students.id, Students.first_name, Students.last_name, class.class_name "
+        "FROM Students "
+        "JOIN Attendence ON Students.id = Attendence.student_id "
+        "JOIN class ON Attendence.class_id = class.id "
+        "WHERE class.id = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK)
+    {
+        cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << endl;
+        return;
+    }
+
+    sqlite3_bind_int(stmt, 1, classID);
+
+    cout << "Students in class ID " << classID << " " << endl;
+    while (sqlite3_step(stmt) == SQLITE_ROW)
+    {
+        int id = sqlite3_column_int(stmt, 0);
+        const unsigned char* firstName = sqlite3_column_text(stmt, 1);
+        const unsigned char* lastName = sqlite3_column_text(stmt, 2);
+        const unsigned char* className = sqlite3_column_text(stmt, 3);
+
+        cout << "ID: " << id << ", Name: " << firstName << " " << lastName << ", Class: " << className << endl;
+    }
+
+    sqlite3_finalize(stmt);
 }
 void DBAbstraction::recordAttendence(int studentID, int classID, const string& date, const string& present)
 {
