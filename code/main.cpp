@@ -1,7 +1,6 @@
 #include <iostream>
 #include <ctime>
 #include <chrono>
-#include <string>
 using namespace std;
 void entryIO();
 void getSummary();
@@ -77,15 +76,12 @@ void getSummary()
     cin >> sumIn;
     if (sumIn == 1)
     {
-        //get data from database
     }
     else if (sumIn == 2)
     {
-        //get data from database
     }
     else if (sumIn == 3)
     {
-        //get data from database
     }
     else if (sumIn == 4)
     {
@@ -101,58 +97,18 @@ void getSummary()
 void recordAttn()
 {
     cout << "Which class would you like to record attendance for?" << endl;
-    //populate from database
     auto start = std::chrono::system_clock::now();
     auto legacyStart = std::chrono::system_clock::to_time_t(start);
     char tmBuff[30];
     ctime_s(tmBuff, sizeof(tmBuff), &legacyStart);
-    cout << "What day do you wish to record attendance for?" << endl << "1. Use Current Time" << endl << "2. Enter a date." << endl;
     char inDateOpt = 0;
     cin >> inDateOpt;
     if (inDateOpt == '1')
     {
-        //do stuff
-    }
     else if (inDateOpt == '2')
     {
-        string date; 
-        string month, day, year;
-
-        cout << "Please enter a date (MM/DD/YYYY)" << endl;
-        
-
-        while (true){
-
-            
-            cin >> date;
-
-            if (date.find('/') != std::string::npos){
-                month = date.substr(0,date.find('/'));
-                date = date.substr(date.find('/')+1);
-
-                if (date.find('/') != std::string::npos){
-                    day = date.substr(0,date.find('/'));
-                    year = date.substr(date.find('/')+1);
-
-
-                    int monthInt = stoi(month);
-                    int dayInt = stoi(day);
-                    int yearInt = stoi(year);
-
-                    if(monthInt > 0 && monthInt < 13 && dayInt > 0 && dayInt < 32){
-                        break;
-                    }
-                }
-            }
-
-            cout << "Please use format (MM/DD/YYYY)";
 
         }
-
-        
-
-        cout << month << endl << day << endl << year << endl;
-
     }
     entryIO();
 }
@@ -167,8 +123,6 @@ void addStudent()
     cout << "Please enter the new student's last name" << endl;
     string lastName;
     cin >> lastName;
-    //commit to database
-    //db.addStudent(firstName, lastName);
     cout << endl << "Successfully added student." << endl << "Add another?" << endl << "1. Yes" << "2. No" << endl;
 
     string response;
@@ -179,7 +133,6 @@ void addStudent()
     }
         
     while (response != "2" && response != "1"){
-        cout << "Invalid entry! Please try again." << endl << endl;
         cin >> response;
     }
     }
@@ -193,7 +146,6 @@ void addClass()
     cin >> className;
     while (true)
     {
-        cout << "Successfully added class. Would you like to populate this class now?" << endl << "1. Yes" << endl << "2. No" << endl << endl;
         char popClassBool;
         cin >> popClassBool;
         if (popClassBool == '1')
@@ -216,7 +168,6 @@ void addClass()
 void editStudent()
 {
     cout << "Which student would you like to edit?" << endl;
-    //populate from database
     while (true)
     {
         cout << "What would you like to edit about them?" << endl << "1. First Name" << endl << "2. Last Name" << endl << "3. Edit Attendance" << endl << "4. Edit Class Enrollment" << endl;
@@ -224,22 +175,18 @@ void editStudent()
         cin >> editStudentChar;
         if (editStudentChar == '1')
         {
-            //do stuff
             break;
         }
         else if (editStudentChar == '2')
         {
-            //do stuff
             break;
         }
         else if (editStudentChar == '3')
         {
-            //do stuff
             break;
         }
         else if (editStudentChar == '4')
         {
-            //do stuff
             break;
         }
         else
