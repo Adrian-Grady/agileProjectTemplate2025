@@ -152,10 +152,10 @@ void recordAttn()
         string date;
         cin >> date;
 
-        vector<int> allStudents = dbase.getStudentFromClass(classID);
+        vector<int> allStudents = dbase.getStudentsInClass(classID);
         for each(int studentID in allStudents)
         {
-            string name = dbase.getName(studentID);
+            string name = dbase.getStudentFromID(studentID);
             cout << "Student ID: " << studentID << name << endl;
             string attnData;
             cin >> attnData;
@@ -342,7 +342,7 @@ void editClass()
         bool continueAdding = true;
         while (continueAdding){
             cout << "Which student would you like to remove?" << endl;
-            dbase.getAllStudentsInClass(classSelection);
+            dbase.printAllStudentsInClass(classSelection);
             char studentSelection;
             cin >> studentSelection;
             dbase.removeStudentFromClass(studentSelection, classSelection);
