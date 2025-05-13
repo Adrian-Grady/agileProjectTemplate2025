@@ -335,31 +335,115 @@ void DBAbstraction::removeStudentFromClass(int studentID, int classID) {
 }
 string DBAbstraction::getStudentFromID(int studentId)
 {
-    const char* sql = "INSERT INTO Attendence (student_id, class_id, date, present) VALUES (?,?,?,?);";
-    sqlite3_stmt* stmt;
+    sqlite3_stmt* myStatement;
+    const char* query = "SELECT Students.first_name, Students.last_name FROM Students WHERE Students.id = ? ";
+    int statusOfPrep = sqlite3_prepare_v2(db, query, -1, &myStatement, NULL);
+    sqlite3_bind_int(myStatement, 1, studentId);
+    string fullName;
 
-    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK)
+    if (statusOfPrep == SQLITE_OK)
     {
-        cerr << "Failed to send student statement: " << sqlite3_errmsg(db) << endl;
-    }
+        int statusOfStep = sqlite3_step(myStatement);
+        while (statusOfStep == SQLITE_ROW)
+        {
+            const unsigned char* firstName = sqlite3_column_text(myStatement, 0);
+            const unsigned char* lastName = sqlite3_column_text(myStatement, 1);
+            fullName = string(reinterpret_cast<const char*>(firstName)) + " " + string(reinterpret_cast<const char*>(lastName));
 
-    if (sqlite3_step(stmt) != SQLITE_DONE)
-    {
-        cerr << "Failed to record attendence: " << sqlite3_errmsg(db) << endl;
+            //need to cast and decide what to print still
+            statusOfStep = sqlite3_step(myStatement);
+        }
+
+        sqlite3_finalize(myStatement);
     }
     else
     {
-        cout << "Attendence recorded: " << present << " for student " << studentID << " on " << date << endl;
+        cout << "Problem creating a prepared statement" << endl;
     }
-    sqlite3_finalize(stmt);
-    return string();
+    return fullName;
 }
 vector<int> DBAbstraction::getStudentsInClass(int classID)
 {
-    return vector<int>();
+    sqlite3_stmt* myStatement;
+    const char* query = "SELECT DISTINCT Attendence.student_id FROM Attendence WHERE Attendence.date IS NULL AND Attendence.class_id = ?";
+    int statusOfPrep = sqlite3_prepare_v2(db, query, -1, &myStatement, NULL);
+    sqlite3_bind_int(myStatement, 1, classID);
+    vector<int> studentIDs;
+    if (statusOfPrep == SQLITE_OK)
+    {
+        int statusOfStep = sqlite3_step(myStatement);
+        while (statusOfStep == SQLITE_ROW)
+        {
+            const unsigned char* id = sqlite3_column_text(myStatement, 0);
+            studentIDs.push_back(int(reinterpret_cast<const char*>(id)));
+            statusOfStep = sqlite3_step(myStatement);
+        }
+
+        sqlite3_finalize(myStatement);
+    }
+    else
+    {
+        cout << "Problem creating a prepared statement" << endl;
+    }
+
+    return studentIDs;
+}
+vector<int> DBAbstraction::getAllStudentsIDsOrderByLastName(int classID)
+{
+    sqlite3_stmt* myStatement;
+    const char* query = "SELECT Students.id FROM Students WHERE Students.id IN( SELECT DISTINCT Attendence.student_id FROM Attendence WHERE Attendence.date IS NULL AND Attendence.class_id = ?) ORDER BY Students.last_name ASC";
+    int statusOfPrep = sqlite3_prepare_v2(db, query, -1, &myStatement, NULL);
+    sqlite3_bind_int(myStatement, 1, classID);
+    vector<int> studentIDs;
+    if (statusOfPrep == SQLITE_OK)
+    {
+        int statusOfStep = sqlite3_step(myStatement);
+        while (statusOfStep == SQLITE_ROW)
+        {
+            const unsigned char* id = sqlite3_column_text(myStatement, 0);
+            studentIDs.push_back(int(reinterpret_cast<const char*>(id)));
+            statusOfStep = sqlite3_step(myStatement);
+        }
+
+        sqlite3_finalize(myStatement);
+    }
+    else
+    {
+        cout << "Problem creating a prepared statement" << endl;
+    }
+
+    return studentIDs;
 }
 void DBAbstraction::printAllStudentsInClass(int classID)
 {
+    sqlite3_stmt* stmt;
+    const char* sql =
+        "SELECT DISTINCT Students.id, Students.first_name, Students.last_name, class.class_name "
+        "FROM Students "
+        "JOIN Attendence ON Students.id = Attendence.student_id "
+        "JOIN class ON Attendence.class_id = class.id "
+        "WHERE class.id = ?;";
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr) != SQLITE_OK)
+    {
+        cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << endl;
+        return;
+    }
+
+    sqlite3_bind_int(stmt, 1, classID);
+
+    cout << "Students in class ID " << classID << " " << endl;
+    while (sqlite3_step(stmt) == SQLITE_ROW)
+    {
+        int id = sqlite3_column_int(stmt, 0);
+        const unsigned char* firstName = sqlite3_column_text(stmt, 1);
+        const unsigned char* lastName = sqlite3_column_text(stmt, 2);
+        const unsigned char* className = sqlite3_column_text(stmt, 3);
+
+        cout << "ID: " << id << ", Name: " << firstName << " " << lastName << ", Class: " << className << endl;
+    }
+
+    sqlite3_finalize(stmt);
 }
 void DBAbstraction::recordAttendence(int studentID, int classID, const string& date, const string& present)
 {

@@ -26,9 +26,11 @@ public:
     void getStudentSummary(int studentID);
     void enrollStudentInClass(int studentID, int classID);
     void removeStudentFromClass(int studentID, int classID);
+
     string getStudentFromID(int studentId);
     vector<int> getStudentsInClass(int classID);
     void printAllStudentsInClass(int classID);
+    vector<int>getAllStudentsIDsOrderByLastName(int classID);
     
     
 
