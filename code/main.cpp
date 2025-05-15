@@ -100,7 +100,7 @@ void getSummary()
         dbase.getAllStudents();
         char studentSelection;
         cin >> studentSelection;
-        dbase.getStudentSummary(studentSelection);
+        dbase.getStudentSummary(studentSelection - '0');
     }
     else if (sumIn == 4)
     {
@@ -120,6 +120,7 @@ void recordAttn()
     cout << "Which class would you like to record attendance for?" << endl;
     char classID;
     cin >> classID;
+    classID = classID - '0';
     auto start = std::chrono::system_clock::now();
     time_t legacyStart = std::chrono::system_clock::to_time_t(start);
     time_t np = time(0);
@@ -141,7 +142,7 @@ void recordAttn()
         for (int studentID : allStudents)
         {
             string name = dbase.getStudentFromID(studentID);
-            cout << "Student ID: " << studentID << name << endl;
+            cout << "Student ID: " << studentID << " " << name << endl;
             string attnData;
             cin >> attnData;
             dbase.recordAttendence(studentID, classID, date, attnData);
@@ -322,7 +323,7 @@ void editClass()
             dbase.getAllStudents();
             char studentSelection;
             cin >> studentSelection;
-            dbase.enrollStudentInClass(studentSelection, classSelection);
+            dbase.enrollStudentInClass(studentSelection - '0', classSelection - '0');
             cout << "Student added. Add another?" << endl;
             char continueAddingSelection;
             cin >> continueAddingSelection;

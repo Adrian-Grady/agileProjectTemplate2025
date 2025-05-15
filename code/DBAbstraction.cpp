@@ -237,7 +237,7 @@ void DBAbstraction::getDaySummary(const string& date)
     const char* query = "SELECT DISTINCT Students.first_name, Students.last_name, Attendence.date, Attendence.present, Attendence.class_id, Attendence.id, class.class_name FROM Students, Attendence, class WHERE Attendence.date = ? AND Attendence.student_id = Students.id AND Attendence.class_id = class.id AND Attendence.date IS NOT NULL ORDER BY Attendence.date ASC; ";
     int statusOfPrep = sqlite3_prepare_v2(db, query, -1, &myStatement, NULL);
     sqlite3_bind_text(myStatement, 1, date.c_str(), -1, SQLITE_STATIC);
-
+    int temp = 0;
     if (statusOfPrep == SQLITE_OK)
     {
         int statusOfStep = sqlite3_step(myStatement);
@@ -254,6 +254,8 @@ void DBAbstraction::getDaySummary(const string& date)
 
             //need to cast and decide what to print still
             statusOfStep = sqlite3_step(myStatement);
+            temp++;
+            cout << temp << endl;
         }
 
         sqlite3_finalize(myStatement);
@@ -288,7 +290,7 @@ void DBAbstraction::getStudentSummary(int studentID)
             //need to cast and decide what to print still
             statusOfStep = sqlite3_step(myStatement);
         }
-
+        cout << "Loop ends" << endl;
         sqlite3_finalize(myStatement);
     }
     else
@@ -401,7 +403,7 @@ vector<int> DBAbstraction::getAllStudentsIDsOrderByLastName(int classID)
         while (statusOfStep == SQLITE_ROW)
         {
             int id = sqlite3_column_int(myStatement, 0);
-            studentIDs.push_back(id);
+            studentIDs.push_back(id-'0');
             statusOfStep = sqlite3_step(myStatement);
         }
 
