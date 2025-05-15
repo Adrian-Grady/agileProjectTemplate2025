@@ -215,8 +215,8 @@ void DBAbstraction::getClassSummary(int classID)
             const unsigned char* lastName = sqlite3_column_text(myStatement, 1);
             const unsigned char* classDate = sqlite3_column_text(myStatement, 2);
             const unsigned char* present = sqlite3_column_text(myStatement, 3); 
-            const unsigned char* classID = sqlite3_column_text(myStatement, 4);
-            const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
+            int classID = sqlite3_column_int(myStatement, 4);
+            int attendenceID = sqlite3_column_int(myStatement, 5);
             cout << firstName << " " << lastName << " " << present << " on " << classDate << endl;
 
             //need to cast and decide what to print still
@@ -247,8 +247,8 @@ void DBAbstraction::getDaySummary(const string& date)
             const unsigned char* lastName = sqlite3_column_text(myStatement, 1);
             const unsigned char* classDate = sqlite3_column_text(myStatement, 2);
             const unsigned char* present = sqlite3_column_text(myStatement, 3);
-            const unsigned char* classID = sqlite3_column_text(myStatement, 4);
-            const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
+            int classID = sqlite3_column_int(myStatement, 4);
+            int attendenceID = sqlite3_column_int(myStatement, 5);
             const unsigned char* className = sqlite3_column_text(myStatement, 6);
             cout << firstName << " " << lastName << " " << present << " on " << classDate << " in " << className << endl;
 
@@ -280,8 +280,8 @@ void DBAbstraction::getStudentSummary(int studentID)
             const unsigned char* lastName = sqlite3_column_text(myStatement, 1);
             const unsigned char* classDate = sqlite3_column_text(myStatement, 2);
             const unsigned char* present = sqlite3_column_text(myStatement, 3);
-            const unsigned char* classID = sqlite3_column_text(myStatement, 4);
-            const unsigned char* attendenceID = sqlite3_column_text(myStatement, 5);
+            int classID = sqlite3_column_int(myStatement, 4);
+            int attendenceID = sqlite3_column_int(myStatement, 5);
             const unsigned char* className = sqlite3_column_text(myStatement, 6);
             cout << present << " on " << classDate << " in " << className << endl;
 
@@ -374,8 +374,8 @@ vector<int> DBAbstraction::getStudentsInClass(int classID)
         int statusOfStep = sqlite3_step(myStatement);
         while (statusOfStep == SQLITE_ROW)
         {
-            const unsigned char* id = sqlite3_column_text(myStatement, 0);
-            studentIDs.push_back(int(reinterpret_cast<const char*>(id)));
+            int id = sqlite3_column_int(myStatement, 0);
+            studentIDs.push_back(id);
             statusOfStep = sqlite3_step(myStatement);
         }
 
@@ -400,8 +400,8 @@ vector<int> DBAbstraction::getAllStudentsIDsOrderByLastName(int classID)
         int statusOfStep = sqlite3_step(myStatement);
         while (statusOfStep == SQLITE_ROW)
         {
-            const unsigned char* id = sqlite3_column_text(myStatement, 0);
-            studentIDs.push_back(int(reinterpret_cast<const char*>(id)));
+            int id = sqlite3_column_int(myStatement, 0);
+            studentIDs.push_back(id);
             statusOfStep = sqlite3_step(myStatement);
         }
 

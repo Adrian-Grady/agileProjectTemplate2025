@@ -12,7 +12,7 @@ void addStudent();
 void addClass();
 void editStudent();
 void editClass();
-DBAbstraction dbase("attendence.db");
+DBAbstraction dbase("C:/Users/robk1/OneDrive/Documents/GitHub/agileProjectTemplate2025/code/attendence.db");
 int main()
 {
     entryIO();
@@ -123,7 +123,8 @@ void recordAttn()
     auto start = std::chrono::system_clock::now();
     time_t legacyStart = std::chrono::system_clock::to_time_t(start);
     time_t np = time(0);
-    tm* currTime = localtime(&np);
+    tm currTime;
+    localtime_s(&currTime, &np);
     char tmBuff[30];
     ctime_s(tmBuff, sizeof(tmBuff), &legacyStart);
     cout << "What day do you wish to record attendance for?" << endl << "1. Use current time" << endl << "2. Enter a date." << endl;
@@ -132,9 +133,9 @@ void recordAttn()
     cin >> inDateOpt;
     if (inDateOpt == '1')
     {
-        int year = currTime->tm_year + 1900;
-        int month = currTime->tm_mon + 1;
-        int day = currTime->tm_mday;
+        int year = currTime.tm_year + 1900;
+        int month = currTime.tm_mon + 1;
+        int day = currTime.tm_mday;
         string date = to_string(day) + "/" + to_string(month) + "/" + to_string(year);
         vector<int> allStudents = dbase.getStudentsInClass(classID);
         for (int studentID : allStudents)
